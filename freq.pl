@@ -11,6 +11,8 @@ die "Not an XML file" if (<$stdout> !~ /XML/);
 my $dts = 0;
 open(my $file, $ARGV[0]) or die "Can't open file";
 while (my $line = <$file>) {
-  print $line;
+  if ($line =~ /^<NHNTSample DTS="(\d+)"/) {
+    print "$1\n";
+  }
 }
 close $file;
