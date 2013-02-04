@@ -12,7 +12,8 @@ my $dts = 0;
 open(my $file, $ARGV[0]) or die "Can't open file";
 while (my $line = <$file>) {
   if ($line =~ /^<NHNTSample DTS="(\d+)"/) {
-    print "$1\n";
+    print (($1 - $dts) . "\n");
+    $dts = $1;
   }
 }
 close $file;
