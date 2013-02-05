@@ -27,7 +27,7 @@ my $twigout = XML::Twig->new(
     },
     NHNTSample => sub {
       my $element = $_;
-      $element->set_att("DTS", $ptss[$count]);
+      $element->set_att("DTS", $ptss[$count] * $factor);
       
       if ($element->att_exists("CTSOffset")) {
         die "cts offset detected";
@@ -39,3 +39,4 @@ my $twigout = XML::Twig->new(
 );
 $twigout->parsefile($ARGV[1]);
 $twigout->print;
+$|++;
