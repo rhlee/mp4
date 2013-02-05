@@ -23,19 +23,33 @@ my %elements = ();
 my $count = 0;
 my $twigout = XML::Twig->new(
   twig_handlers => {
+    NHNTStream => sub {
+      $_->set_att("timeScale", "1000");
+    },
     NHNTSample => sub {
       my $element = $_;
-      my $dts = $element->att("DTS");
-      my $pts = $dts;
+      my $oldDts = $element->att("DTS");
+      my $oldPts = $oldDts;
       
+      $element->set_att("DTS", $ptss[$count] * $factor);
       
+      print $oldPts . "\n";
       if ($element->att_exists("CTSOffset")) {
-        $pts += $element->att("DTS");
-        $elements{$pts} = $element;
+        $oldPts += $element->att("CTSOffset");
+        print $oldPts . "\n";
+        
+        #outside if?
+        if (defined (my $deferredElement = $elements{$oldDts})) {
+          die "sagdahakd";
+          #delete
+        }
+        
+        $elements{$oldPts} = $element;
       }
       $count++;
     }
-  }
+  },
+  pretty_print => "nice"
 );
-$twigin->parsefile($ARGV[1]);
-$twigout->print;
+$twigout->parsefile($ARGV[1]);
+#$twigout->print;
