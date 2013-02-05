@@ -13,10 +13,12 @@ my $twigin = XML::Twig->new(
       my $pts = $element->att("DTS");
       $pts += $element->att("DTS") if $element->att_exists("CTSOffset");
       push(@ptss, $pts);
-      print $pts . "\n";
     }
-  },
-  pretty_print => 'nice'
+  }
 );
 $twigin->parsefile($ARGV[0]);
+@ptss = sort {$a <=> $b} @ptss;
+foreach (@ptss) {
+  print $_ . "\n";
+}
 #$twig->print;
